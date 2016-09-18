@@ -13,15 +13,15 @@ func TestMarshal(t *testing.T) {
 	cases := []testCase{
 		testCase{
 			Message{Command: "join", Options: []string{"#golang"}},
-			"JOIN #golang",
+			"JOIN #golang\r\n",
 		},
 		testCase{
 			Message{Command: "ping", Options: []string{"chat.freenode.net"}},
-			"PING chat.freenode.net",
+			"PING chat.freenode.net\r\n",
 		},
 		testCase{
 			Message{Command: "user", Options: []string{"name", "name", "irc.freenode.net", "Some Cool Name"}},
-			"USER name name irc.freenode.net :Some Cool Name",
+			"USER name name irc.freenode.net :Some Cool Name\r\n",
 		},
 	}
 
@@ -40,17 +40,17 @@ func TestUnmarshal(t *testing.T) {
 
 	cases := []testCase{
 		testCase{
-			"JOIN #golang",
+			"JOIN #golang\r\n",
 			Message{Command: "JOIN", Options: []string{"#golang"}},
 			nil,
 		},
 		testCase{
-			"PING chat.freenode.net",
+			"PING chat.freenode.net\r\n",
 			Message{Command: "PING", Options: []string{"chat.freenode.net"}},
 			nil,
 		},
 		testCase{
-			"USER name name irc.freenode.net :Some Cool Name",
+			"USER name name irc.freenode.net :Some Cool Name\r\n",
 			Message{Command: "USER", Options: []string{"name", "name", "irc.freenode.net", "Some Cool Name"}},
 			nil,
 		},
