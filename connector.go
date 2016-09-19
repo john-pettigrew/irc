@@ -1,7 +1,10 @@
 package irc
 
 import (
-	"./message"
+	"bufio"
+	"net"
+
+	"github.com/john-pettigrew/irc/message"
 )
 
 func NewClient(addr string) (client, error) {
@@ -9,10 +12,10 @@ func NewClient(addr string) (client, error) {
 	if err != nil {
 		return client{}, err
 	}
-	return client{conn}
+	return client{conn}, nil
 }
 
-var connection interface {
+type connection interface {
 	Read(b []byte) (n int, err error)
 	Write(b []byte) (n int, err error)
 }
@@ -21,10 +24,24 @@ type client struct {
 	conn connection
 }
 
-func (i *client) SendMessage(m Message) error {
-	return nil
+func (c *client) SendMessage(m message.Message) error {
+	toSend := []byte(message.Marshal(m))
+	_, err := c.conn.Write(toSend)
+	return err
 }
 
-func (i *client) SubscribeForMessages() {
-
+func (c *client) SubscribeForMessages(msgCh chan message.Message) {
+	reader := bufio.NewReader(c.conn)
+	for {
+		s, err := reader.ReadString('\n')
+		if err != nil {
+			break
+		}
+		newMsg, err := message.Unmarshal(s)
+		if err != nil {
+			break
+		}
+		msgCh <- newMsg
+	}
+	close(msgCh)
 }
