@@ -2,17 +2,18 @@ package irc
 
 import (
 	"bufio"
+	"log"
 	"net"
 
 	"github.com/john-pettigrew/irc/message"
 )
 
-func NewClient(addr string) (client, error) {
+func NewClient(addr string) (Client, error) {
 	conn, err := net.Dial("tcp", addr)
 	if err != nil {
-		return client{}, err
+		return Client{}, err
 	}
-	return client{conn}, nil
+	return Client{conn}, nil
 }
 
 type connection interface {
@@ -20,28 +21,31 @@ type connection interface {
 	Write(b []byte) (n int, err error)
 }
 
-type client struct {
+type Client struct {
 	conn connection
 }
 
-func (c *client) SendMessage(m message.Message) error {
+func (c *Client) SendMessage(m message.Message) error {
 	toSend := []byte(message.Marshal(m))
 	_, err := c.conn.Write(toSend)
 	return err
 }
 
-func (c *client) SubscribeForMessages(msgCh chan message.Message) {
+func (c *Client) SubscribeForMessages(msgCh *chan message.Message) {
 	reader := bufio.NewReader(c.conn)
 	for {
 		s, err := reader.ReadString('\n')
 		if err != nil {
+			log.Println(err)
 			break
 		}
 		newMsg, err := message.Unmarshal(s)
 		if err != nil {
+			log.Println(err)
 			break
 		}
-		msgCh <- newMsg
+
+		*msgCh <- newMsg
 	}
-	close(msgCh)
+	close(*msgCh)
 }
