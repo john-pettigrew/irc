@@ -45,7 +45,14 @@ func (c *Client) SubscribeForMessages(msgCh *chan message.Message) {
 			break
 		}
 
+		if newMsg.Command == "PING" {
+			newMsg.Command = "PONG"
+			c.SendMessage(newMsg)
+			continue
+		}
+
 		*msgCh <- newMsg
+
 	}
 	close(*msgCh)
 }
