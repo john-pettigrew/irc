@@ -175,7 +175,7 @@ func ParseCommand(input string) (Message, error) {
 		}
 
 		if i == numOptions-1 && numOptions < len(pieces)-1 {
-			msg.Options = append(msg.Options, ":"+strings.Join(pieces[i:], " "))
+			msg.Options = append(msg.Options, strings.Join(pieces[i:], " "))
 			break
 		}
 
