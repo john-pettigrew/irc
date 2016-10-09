@@ -6,6 +6,7 @@ import (
 )
 
 type Message struct {
+	Prefix  string
 	Command string
 	Options []string
 }
@@ -88,6 +89,10 @@ func Marshal(m Message) string {
 	}
 
 	options := strings.Join(m.Options, " ")
+
+	if m.Prefix != "" {
+		fullCmd = append(fullCmd, ":"+m.Prefix)
+	}
 	fullCmd = append(fullCmd, cmd)
 	if options != "" {
 		fullCmd = append(fullCmd, options)
@@ -118,7 +123,8 @@ func Unmarshal(input string) (Message, error) {
 
 	//Check for prefix
 	if string(pieces[0][0]) == ":" {
-		//remove extra data
+		msg.Prefix = pieces[0]
+		//remove prefix data
 		pieces = pieces[1:]
 	}
 
