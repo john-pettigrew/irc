@@ -167,7 +167,7 @@ func ParseCommand(input string) (Message, error) {
 		//remove command
 		pieces = pieces[1:]
 	} else {
-		msg.Command = "PRIVMSG"
+		return Message{}, errors.New("A command is required")
 	}
 
 	numOptions, cmdExists := optionCounts[msg.Command]
