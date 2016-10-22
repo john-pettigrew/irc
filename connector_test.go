@@ -26,7 +26,7 @@ func (m *MockNetConn) Write(b []byte) (n int, err error) {
 func TestSendMessage(t *testing.T) {
 	mConn := new(MockNetConn)
 
-	irc := client{mConn}
+	irc := Client{mConn}
 
 	type testCase struct {
 		input message.Message

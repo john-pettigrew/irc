@@ -1,8 +1,9 @@
 package message
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestMarshal(t *testing.T) {
@@ -56,7 +57,7 @@ func TestUnmarshal(t *testing.T) {
 		},
 		testCase{
 			":aaa!bbb@ccc/ddd PRIVMSG #golang :Some cool message!",
-			Message{Command: "PRIVMSG", Options: []string{"#golang", "Some cool message!"}},
+			Message{Prefix: ":aaa!bbb@ccc/ddd", Command: "PRIVMSG", Options: []string{"#golang", "Some cool message!"}},
 			nil,
 		},
 	}
