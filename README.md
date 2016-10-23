@@ -3,21 +3,21 @@ An IRC client library written in Golang.
 
 ## Installing
 You can install this library by running:
-```
+```sh
 go get github.com/john-pettigrew/irc
 ```
 Add the following to the top of your file:
-```
+```go
 import "github.com/john-pettigrew/irc"
 ```
 Or if you need the message library:
-```
+```go
 import "github.com/john-pettigrew/irc/message"
 ```
 
 ## Usage
 ### Sample Usage
-```
+```go
 // create our channel and connect to the server.
 msgCh := make(chan message.Message)
 ircConn, err := irc.NewClient("Someserver:6667")
@@ -40,6 +40,6 @@ if err != nil {
 Documentation can be found [here](https://godoc.org/github.com/john-pettigrew/irc).
 
 ## Running Tests
-```
+```sh
 go test ./...
 ```
