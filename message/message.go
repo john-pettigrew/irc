@@ -5,6 +5,7 @@ import (
 	"strings"
 )
 
+// Message represents an IRC message.
 type Message struct {
 	Prefix  string
 	Command string
@@ -71,6 +72,7 @@ var optionCounts = map[string]int{
 	"WHOWAS":   3,
 }
 
+// Marshal converts a Message to a string representing the IRC message to be sent.
 func Marshal(m Message) string {
 
 	fullCmd := []string{}
@@ -104,6 +106,7 @@ func Marshal(m Message) string {
 	return strings.Join(fullCmd, " ") + "\r\n"
 }
 
+// Unmarshal converts a string representation of an IRC message to the Message type.
 func Unmarshal(input string) (Message, error) {
 
 	msg := Message{}
@@ -149,6 +152,7 @@ func Unmarshal(input string) (Message, error) {
 	return msg, nil
 }
 
+// ParseCommand converts an inputted command string to a Message type.
 func ParseCommand(input string) (Message, error) {
 	msg := Message{}
 
